@@ -252,3 +252,12 @@ Token Lexer::number() noexcept {
   while (is_digit(peek())) get();
   return Token(Token::Kind::Number, start, beg_);
 }
+
+std::ostream &operator<<(std::ostream &os, const Token::Kind &kind) {
+  static const char *const names[]{
+      "Number",      "Identifier", "LeftParen", "RightParen", "LeftSquare",
+      "RightSquare", "Plus",       "Minus",     "Asterisk",   "Dot",
+      "Comma",       "Colon",      "End",       "Unexpected"};
+
+  return os << names[static_cast<int>(kind)];
+}
