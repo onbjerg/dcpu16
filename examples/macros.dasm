@@ -1,0 +1,37 @@
+; Macros are directives that expand to DCPU assembly
+; at compile time.
+;
+; This is an example macro called `call` that pushes
+; registers X and Y to the stack, sets them to the
+; parameters a and b, calls the specified
+; subroutine and restores X and Y from the stack
+; afterwards.
+.macro call(routine, a, b)
+  set push, x
+  set push, y
+  set x, a
+  set y, b
+  jsr routine
+  set y, pop
+  set x, pop
+.endmacro
+
+; Example usage
+set x, 1            ; Put some arbitrary values in X and Y to demonstrate stack
+set y, 2
+.call(add, 10, 10)  ; Z = 10 + 10 = 20
+.call(add, z, z)    ; Z = Z + Z = 40
+
+ife x, 1            ; Assert that the X and Y registers have been restored from stack
+ife y, 2
+ife z, 40           ; Assert that Z was calculated correctly
+set pc, pass
+set pc, fail
+
+:add
+  add x, y          ; Add parameters (a and b from call macro)
+  set z, x          ; Store the result in Z
+  set pc, pop       ; Return from subroutine
+
+:pass set pc, pass  ; If the DCPU ends up here, then the macro worked
+:fail set pc, fail  ; If the DCPU ends up here, then the macro didn't work as intended
