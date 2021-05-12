@@ -2,7 +2,7 @@
 #include <string>
 
 class Token {
-public:
+ public:
   enum class Kind {
     Number,
     Identifier,
@@ -45,18 +45,18 @@ public:
   std::string_view lexeme() const noexcept { return lexeme_; }
   void lexeme(std::string_view lexeme) noexcept { lexeme_ = std::move(lexeme); }
 
-private:
+ private:
   Kind kind_{};
   std::string_view lexeme_{};
 };
 
 class Lexer {
-public:
+ public:
   Lexer(const char *beg) noexcept : beg_(beg) {}
 
   Token next() noexcept;
 
-private:
+ private:
   Token identifier() noexcept;
   Token number() noexcept;
   Token atom(Token::Kind) noexcept;
