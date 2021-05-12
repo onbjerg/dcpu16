@@ -226,8 +226,13 @@ Token Lexer::next() noexcept {
     case ':':
       return atom(Token::Kind::Colon);
     case ';':
-      // Skip until next newline
-      while (peek() != '\n') get();
+      // Skip until next newline or EOF
+      while (peek() != '\n') {
+        get();
+        if (peek() == '\0') {
+          return atom(Token::Kind::End);
+        }
+      }
       return next();
   }
 }
