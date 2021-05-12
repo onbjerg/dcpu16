@@ -8,7 +8,14 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wpedantic -Wall -Wextra")
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
+# Configure libraries
+add_subdirectory(lib/Catch2)
+
 # Set sources
 set(DASM_SRCS src/dasm/Lexer.cpp)
 
 add_executable(dasm src/dasm/dasm.cpp ${DASM_SRCS})
+
+# Configure tests
+add_executable(test tests/test.cpp ${DASM_SRCS})
+target_link_libraries(test PRIVATE Catch2::Catch2)
