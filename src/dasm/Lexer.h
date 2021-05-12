@@ -55,7 +55,6 @@ std::ostream &operator<<(std::ostream &os, const Token::Kind &kind);
 
 class Lexer {
  public:
-  Lexer(std::string str) noexcept : beg_(str.c_str()) {}
   Lexer(const char *beg) noexcept : beg_(beg) {}
 
   Token next() noexcept;

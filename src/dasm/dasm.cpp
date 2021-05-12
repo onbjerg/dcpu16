@@ -1,6 +1,6 @@
 #include <fstream>
 #include <iostream>
-#include <streambuf>
+#include <iterator>
 #include <string>
 
 #include "Lexer.h"
@@ -13,13 +13,12 @@ int main(int argc, char* argv[]) {
 
   // Read file
   std::ifstream f(argv[1]);
-  std::stringstream buffer;
-  buffer << f.rdbuf();
-
+  std::string contents((std::istreambuf_iterator<char>(f)),
+      std::istreambuf_iterator<char>());
   // TODO(onbjerg): For now, we just dump the tokens of the lexed
   // file. Later on, we want to dump the assembled bytecode
   // to a file.
-  Lexer lex(buffer.str());
+  Lexer lex(contents.c_str());
   auto token = lex.next();
   for (; !token.is_one_of(Token::Kind::End, Token::Kind::Unexpected);
        token = lex.next()) {
