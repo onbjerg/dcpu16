@@ -1,0 +1,4 @@
+; Writes one or more literals directly to memory
+; at the location of the directive
+.dat 0x1000             ; Writes 0x1000 to memory
+.dat "Hello, world", 0  ; Writes a null-terminated string to memory
