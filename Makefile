@@ -3,8 +3,8 @@ all: dasm
 BUILD_DIR := ./build
 SRC_DIR := ./src
 
-DASM_SRCS := $(SRC_DIR)/bin/dasm.cpp
-DASM_SRCS += $(SRC_DIR)/Lexer.cpp
+DASM_SRCS := $(SRC_DIR)/dasm/dasm.cpp
+DASM_SRCS += $(SRC_DIR)/dasm/Lexer.cpp
 
 CPPFLAGS := -Wall --std=c++17
 

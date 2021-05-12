@@ -3,7 +3,7 @@
 #include <streambuf>
 #include <string>
 
-#include "../Lexer.h"
+#include "Lexer.h"
 
 int main(int argc, char* argv[]) {
   if (argc < 2) {
