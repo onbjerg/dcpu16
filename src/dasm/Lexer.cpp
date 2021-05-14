@@ -223,15 +223,38 @@ Token Lexer::next() noexcept {
       return atom(Token::Kind::Comma);
     case ':':
       return atom(Token::Kind::Colon);
-    case ';':
+    case ';': {
       // Skip until next newline or EOF
       while (peek() != '\n') {
         get();
         if (peek() == '\0') {
-          return atom(Token::Kind::End);
+          return Token(Token::Kind::End, beg_, 1);
         }
       }
       return next();
+    }
+    case '"': {
+      // Ignore starting "
+      get();
+      const char *start = beg_;
+
+      // Continue until we hit another "
+      while (peek() != '"' && peek() != '\0') {
+        get();
+      }
+
+      if (peek() == '\0') {
+        // The string was unterminated
+        return Token(Token::Kind::Unexpected);
+      }
+
+      auto token = Token(Token::Kind::String, start, beg_);
+
+      // Ignore ending "
+      get();
+
+      return token;
+    }
   }
 }
 

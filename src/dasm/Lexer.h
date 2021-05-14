@@ -6,6 +6,7 @@ class Token {
  public:
   enum class Kind {
     Number,
+    String,
     Identifier,
     LeftParen,
     RightParen,

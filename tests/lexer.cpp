@@ -20,9 +20,27 @@ TEST_CASE("Numbers") {
   }
 }
 
+TEST_CASE("String literals") {
+  SECTION("Valid strings") {
+    auto s = GENERATE("\"hello world\"", "\"test123\"");
+
+    auto lexer = Lexer(s);
+    REQUIRE(lexer.next().kind() == Token::Kind::String);
+    REQUIRE(lexer.next().kind() == Token::Kind::End);
+  }
+
+  SECTION("Invalid strings") {
+    auto s = GENERATE("\"unterminated");
+    auto lexer = Lexer(s);
+
+    REQUIRE(lexer.next().kind() == Token::Kind::Unexpected);
+    REQUIRE(lexer.next().kind() == Token::Kind::End);
+  }
+}
+
 TEST_CASE("Identifiers") {
   SECTION("Valid identifiers") {
-    std::string identifier =
+    auto identifier =
         GENERATE("foo",     // Just ASCII
                  "foo_bar", // Has an underscore in the middle
                  "foo_",    // Ends with an underscore
@@ -35,7 +53,7 @@ TEST_CASE("Identifiers") {
   }
 
   SECTION("Invalid identifiers") {
-    std::string identifier = GENERATE("_foo", // Starts with underscore
+    auto identifier = GENERATE("_foo", // Starts with underscore
                                       "1x",   // Starts with a number
                                       "💩"     // Not ASCII
     );
@@ -46,7 +64,7 @@ TEST_CASE("Identifiers") {
   }
 }
 
-Token::Kind parse_atomic(std::string str) {
+Token::Kind parse_atomic(const char *str) {
   auto lexer = Lexer(str);
   return lexer.next().kind();
 }
