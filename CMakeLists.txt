@@ -15,11 +15,12 @@ add_subdirectory(lib/Catch2)
 
 # Set sources
 set(DASM_SRCS src/dasm/Lexer.cpp)
+set(TEST_SRCS tests/test.cpp tests/lexer.cpp)
 
 add_executable(dasm src/dasm/dasm.cpp ${DASM_SRCS})
 
 # Configure tests
-add_executable(tests tests/test.cpp ${DASM_SRCS})
+add_executable(tests ${TEST_SRCS} ${DASM_SRCS})
 target_link_libraries(tests PRIVATE Catch2::Catch2)
 
 include(CTest)
