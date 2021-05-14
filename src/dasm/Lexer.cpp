@@ -217,8 +217,6 @@ Token Lexer::next() noexcept {
       return atom(Token::Kind::Plus);
     case '-':
       return atom(Token::Kind::Minus);
-    case '*':
-      return atom(Token::Kind::Asterisk);
     case '.':
       return atom(Token::Kind::Dot);
     case ',':

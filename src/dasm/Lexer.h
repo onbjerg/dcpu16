@@ -13,7 +13,6 @@ class Token {
     RightSquare,
     Plus,
     Minus,
-    Asterisk,
     Dot,
     Comma,
     Colon,
