@@ -1,11 +1,15 @@
 #include <fstream>
+#include <iomanip>
 #include <iostream>
 #include <iterator>
+#include <stdexcept>
 #include <string>
+#include <vector>
 
+#include "Assembler.h"
 #include "Lexer.h"
 
-int main(int argc, char* argv[]) {
+int main(int argc, char *argv[]) {
   if (argc < 2) {
     std::cerr << "Usage: " << argv[0] << " FILE" << std::endl;
     return 1;
@@ -14,21 +18,42 @@ int main(int argc, char* argv[]) {
   // Read file
   std::ifstream f(argv[1]);
   std::string contents((std::istreambuf_iterator<char>(f)),
-      std::istreambuf_iterator<char>());
-  // TODO(onbjerg): For now, we just dump the tokens of the lexed
-  // file. Later on, we want to dump the assembled bytecode
-  // to a file.
+                       std::istreambuf_iterator<char>());
+  std::cout << "Compiling " << argv[1] << "..." << std::endl;
+
+  // Lex file
   Lexer lex(contents.c_str());
+
+  std::vector<Token> tokens;
   auto token = lex.next();
-  for (; !token.is_one_of(Token::Kind::End, Token::Kind::Unexpected);
-       token = lex.next()) {
-    std::cout << std::setw(12) << token.kind() << " |" << token.lexeme()
-              << "|\n";
+  for (; token.is_not(Token::Kind::End); token = lex.next()) {
+    tokens.push_back(token);
+
+    if (token.is(Token::Kind::Unexpected)) {
+      throw std::domain_error("Unexpected token: " +
+                              std::string(token.lexeme()));
+    }
   }
 
-  if (token.is(Token::Kind::Unexpected)) {
-    std::cout << "Unexpected token: " << token.lexeme() << "\n";
+  // Assemble
+  Assembler assembler(tokens);
+
+  assembler.compile();
+  for (int i = 0; i < assembler.bytecode().size(); i++) {
+    if (i % 8 == 0) {
+
+      std::cout << std::endl
+                << std::hex << std::setfill('0') << std::setw(4) << i << "| ";
+    }
+
+    std::cout << std::hex << std::setfill('0') << std::setw(4)
+              << assembler.bytecode()[i] << " ";
   }
+
+  std::cout << std::endl
+            << std::endl
+            << "Done (" << assembler.bytecode().size() * 2 << " bytes)"
+            << std::endl;
 
   return 0;
 }

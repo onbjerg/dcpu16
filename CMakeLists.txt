@@ -14,8 +14,8 @@ list(APPEND CMAKE_MODULE_PATH
 add_subdirectory(lib/Catch2)
 
 # Set sources
-set(DASM_SRCS src/dasm/Lexer.cpp)
-set(TEST_SRCS tests/test.cpp tests/lexer.cpp)
+set(DASM_SRCS src/dasm/Lexer.cpp src/dasm/Assembler.cpp)
+set(TEST_SRCS tests/test.cpp tests/lexer.cpp tests/assembler.cpp)
 
 add_executable(dasm src/dasm/dasm.cpp ${DASM_SRCS})
 
