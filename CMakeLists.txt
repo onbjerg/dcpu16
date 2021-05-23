@@ -13,11 +13,22 @@ list(APPEND CMAKE_MODULE_PATH
   "${CMAKE_SOURCE_DIR}/lib/Catch2/contrib")
 add_subdirectory(lib/Catch2)
 
+set(GLFW_BUILD_DOCS OFF CACHE BOOL "" FORCE)
+set(GLFW_BUILD_TESTS OFF CACHE BOOL "" FORCE)
+set(GLFW_BUILD_EXAMPLES OFF CACHE BOOL "" FORCE)
+add_subdirectory(lib/glfw)
+find_package(OpenGL REQUIRED)
+
 # Set sources
 set(DASM_SRCS src/dasm/Lexer.cpp src/dasm/Assembler.cpp)
 set(TEST_SRCS tests/test.cpp tests/lexer.cpp tests/assembler.cpp)
 
+# Configure dasm target
 add_executable(dasm src/dasm/dasm.cpp ${DASM_SRCS})
+
+# Configure emu target
+add_executable(emu src/emu/emu.cpp)
+target_link_libraries(emu glfw OpenGL::GL)
 
 # Configure tests
 add_executable(tests ${TEST_SRCS} ${DASM_SRCS})
