@@ -1,5 +1,9 @@
-#include <GLFW/glfw3.h>
+#include "Window.h"
 
 int main() {
-  return 0;
+  Window window("DCPU16 Emulator", 800, 600);
+
+  while (window.running()) {
+
+  }
 }

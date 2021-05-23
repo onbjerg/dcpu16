@@ -21,18 +21,19 @@ find_package(OpenGL REQUIRED)
 
 # Set sources
 set(DASM_SRCS src/dasm/Lexer.cpp src/dasm/Assembler.cpp)
+set(EMU_SRCS src/emu/Window.cpp)
 set(TEST_SRCS tests/test.cpp tests/lexer.cpp tests/assembler.cpp)
 
 # Configure dasm target
 add_executable(dasm src/dasm/dasm.cpp ${DASM_SRCS})
 
 # Configure emu target
-add_executable(emu src/emu/emu.cpp)
+add_executable(emu src/emu/emu.cpp ${EMU_SRCS})
 target_link_libraries(emu glfw OpenGL::GL)
 
 # Configure tests
-add_executable(tests ${TEST_SRCS} ${DASM_SRCS})
-target_link_libraries(tests PRIVATE Catch2::Catch2)
+add_executable(tests ${TEST_SRCS} ${DASM_SRCS} ${EMU_SRCS})
+target_link_libraries(tests PRIVATE Catch2::Catch2 glfw OpenGL::GL)
 
 include(CTest)
 include(Catch)
